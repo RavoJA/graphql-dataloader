@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
 export class Initialize1536075547612 implements MigrationInterface {
 
@@ -8,6 +8,21 @@ export class Initialize1536075547612 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "post_tags_tag" ("postId" integer NOT NULL, "tagId" integer NOT NULL, CONSTRAINT "PK_e9b7b8e6a07bdccb6a954171676" PRIMARY KEY ("postId", "tagId"))`);
         await queryRunner.query(`ALTER TABLE "post_tags_tag" ADD CONSTRAINT "FK_b651178cc41334544a7a9601c45" FOREIGN KEY ("postId") REFERENCES "post"("id") ON DELETE CASCADE`);
         await queryRunner.query(`ALTER TABLE "post_tags_tag" ADD CONSTRAINT "FK_41e7626b9cc03c5c65812ae55e8" FOREIGN KEY ("tagId") REFERENCES "tag"("id") ON DELETE CASCADE`);
+
+        await queryRunner.createTable(new Table({
+            name: "user",
+            columns: [
+                {
+                    name: "id",
+                    type: "int",
+                    isPrimary: true
+                },
+                {
+                    name: "name",
+                    type: "varchar",
+                }
+            ]
+        }), true)
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
@@ -16,6 +31,7 @@ export class Initialize1536075547612 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "post_tags_tag"`);
         await queryRunner.query(`DROP TABLE "post"`);
         await queryRunner.query(`DROP TABLE "tag"`);
+
     }
 
 }

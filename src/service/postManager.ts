@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getConnection, Repository } from 'typeorm';
-import Post from './entity/Post';
-import Tag from './entity/Tag';
+import Post from '../entity/Post';
+import Tag from '../entity/Tag';
 
 let initialized = false;
 let postRepository: Repository<Post>;
@@ -52,4 +52,17 @@ export const tagsOfPosts = async (ids: number[]) => {
     .where('post.id IN (:...ids)', { ids })
     .getMany();
   return posts.map((post) => post.tags);
+};
+
+export const userPost = async (ids: number[]) => {
+  if (!initialized) {
+    initialize();
+  }
+
+  const posts = await postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .where('post.id IN (:...ids)', { ids })
+      .getMany();
+  return posts.map((post) => post.user);
 };

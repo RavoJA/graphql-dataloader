@@ -1,5 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import Tag from './Tag';
+import {User} from "./User";
 
 @Entity()
 export default class Post {
@@ -12,4 +13,8 @@ export default class Post {
     @ManyToMany(() => Tag, (tag) => tag.posts)
     @JoinTable()
     public tags: Tag[];
+
+    @ManyToOne(() => User, (user) => user.posts)
+    @JoinColumn()
+    public user: User;
 }

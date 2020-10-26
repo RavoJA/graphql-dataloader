@@ -1,0 +1,21 @@
+version: "3"
+services:
+  gql_dataloader_database:
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: Mdp@2019
+      POSTGRES_DB: graphql-dalaloader
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:2019-11-12-2
+    ports:
+      - 81:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jeanaime.ravomanana@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: w2f04naR2SUD17WGfo12cg==
+volumes:
+  my_dbdata:
